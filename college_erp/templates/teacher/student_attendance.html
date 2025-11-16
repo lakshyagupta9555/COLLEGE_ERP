@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Student Attendance Details{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-xl shadow-lg p-8">
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-800">Attendance Details</h1>
+            <p class="text-gray-600 mt-2">Student: {{ student.user.get_full_name }} ({{ student.roll_number }})</p>
+        </div>
+        
+        {% for record in attendance_records %}
+        <div class="mb-8 border-b pb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">{{ record.subject.name }} ({{ record.subject.code }})</h2>
+                <div class="text-right">
+                    <p class="text-sm text-gray-600">Attendance: {{ record.present }}/{{ record.total }}</p>
+                    <p class="text-lg font-bold" 
+                        style="color: {% if record.percentage >= 75 %}green{% elif record.percentage >= 60 %}orange{% else %}red{% endif %}">
+                        {{ record.percentage }}%
+                    </p>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-gray-700 font-semibold">Date</th>
+                            <th class="px-4 py-3 text-center text-gray-700 font-semibold">Status</th>
+                            <th class="px-4 py-3 text-left text-gray-700 font-semibold">Marked By</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        {% for att in record.records %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3">{{ att.date|date:"d M Y" }}</td>
+                            <td class="px-4 py-3 text-center">
+                                {% if att.is_present %}
+                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">Present</span>
+                                {% else %}
+                                <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">Absent</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-4 py-3">{{ att.marked_by.user.get_full_name }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="px-4 py-8 text-center text-gray-500">
+                                No attendance records found for this subject.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% empty %}
+        <div class="text-center py-8 text-gray-500">
+            No attendance records found for this student.
+        </div>
+        {% endfor %}
+        
+        <div class="mt-6">
+            <a href="{% url 'teacher_students' %}" 
+                class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition">
+                Back to Students
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

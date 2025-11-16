@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold text-gray-800 mb-8">Admin Dashboard</h1>
+    
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-blue-100 text-sm">Total Students</p>
+                    <h3 class="text-3xl font-bold">{{ total_students }}</h3>
+                </div>
+                <div class="text-4xl">👨‍🎓</div>
+            </div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-green-100 text-sm">Total Teachers</p>
+                    <h3 class="text-3xl font-bold">{{ total_teachers }}</h3>
+                </div>
+                <div class="text-4xl">👨‍🏫</div>
+            </div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-purple-100 text-sm">Departments</p>
+                    <h3 class="text-3xl font-bold">{{ total_departments }}</h3>
+                </div>
+                <div class="text-4xl">🏛️</div>
+            </div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-orange-100 text-sm">Subjects</p>
+                    <h3 class="text-3xl font-bold">{{ total_subjects }}</h3>
+                </div>
+                <div class="text-4xl">📚</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="bg-white rounded-xl shadow-lg p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Quick Actions</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a href="{% url 'admin_add_student' %}" 
+                class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-4 px-6 rounded-lg text-center transition transform hover:scale-105">
+                ➕ Add New Student
+            </a>
+            <a href="{% url 'admin_add_teacher' %}" 
+                class="bg-green-500 hover:bg-green-600 text-white font-medium py-4 px-6 rounded-lg text-center transition transform hover:scale-105">
+                ➕ Add New Teacher
+            </a>
+            <a href="{% url 'admin_add_department' %}" 
+                class="bg-purple-500 hover:bg-purple-600 text-white font-medium py-4 px-6 rounded-lg text-center transition transform hover:scale-105">
+                ➕ Add Department
+            </a>
+            <a href="{% url 'admin_add_subject' %}" 
+                class="bg-orange-500 hover:bg-orange-600 text-white font-medium py-4 px-6 rounded-lg text-center transition transform hover:scale-105">
+                ➕ Add Subject
+            </a>
+            <a href="{% url 'admin_students' %}" 
+                class="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-4 px-6 rounded-lg text-center transition transform hover:scale-105">
+                👥 Manage Students
+            </a>
+            <a href="{% url 'admin_teachers' %}" 
+                class="bg-pink-500 hover:bg-pink-600 text-white font-medium py-4 px-6 rounded-lg text-center transition transform hover:scale-105">
+                👨‍🏫 Manage Teachers
+            </a>
+            <a href="{% url 'admin_departments' %}" 
+                class="bg-teal-500 hover:bg-teal-600 text-white font-medium py-4 px-6 rounded-lg text-center transition transform hover:scale-105">
+                🏛️ Manage Departments
+            </a>
+            <a href="{% url 'admin_subjects' %}" 
+                class="bg-cyan-500 hover:bg-cyan-600 text-white font-medium py-4 px-6 rounded-lg text-center transition transform hover:scale-105">
+                📚 Manage Subjects
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

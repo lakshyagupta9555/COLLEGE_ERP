@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Add Marks{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-xl shadow-lg p-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Add Internal Marks - {{ subject.name }}</h1>
+        
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-gray-700">Roll No</th>
+                            <th class="px-4 py-3 text-left text-gray-700">Name</th>
+                            {% if subject.is_lab %}
+                            <th class="px-4 py-3 text-center text-gray-700">Practical (40)</th>
+                            {% else %}
+                            <th class="px-4 py-3 text-center text-gray-700">Mid-1 (20)</th>
+                            <th class="px-4 py-3 text-center text-gray-700">Mid-2 (20)</th>
+                            <th class="px-4 py-3 text-center text-gray-700">PUT (20)</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        {% for enrollment in enrollments %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3">{{ enrollment.student.roll_number }}</td>
+                            <td class="px-4 py-3">{{ enrollment.student.user.get_full_name }}</td>
+                            {% if subject.is_lab %}
+                            <td class="px-4 py-3 text-center">
+                                <input type="number" name="practical_{{ enrollment.id }}" 
+                                    value="{{ enrollment.practical_marks|default:'' }}" 
+                                    min="0" max="40" step="0.5"
+                                    class="w-24 px-3 py-2 border border-gray-300 rounded-lg text-center">
+                            </td>
+                            {% else %}
+                            <td class="px-4 py-3 text-center">
+                                <input type="number" name="mid1_{{ enrollment.id }}" 
+                                    value="{{ enrollment.mid1_marks|default:'' }}" 
+                                    min="0" max="20" step="0.5"
+                                    class="w-24 px-3 py-2 border border-gray-300 rounded-lg text-center">
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                                <input type="number" name="mid2_{{ enrollment.id }}" 
+                                    value="{{ enrollment.mid2_marks|default:'' }}" 
+                                    min="0" max="20" step="0.5"
+                                    class="w-24 px-3 py-2 border border-gray-300 rounded-lg text-center">
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                                <input type="number" name="put_{{ enrollment.id }}" 
+                                    value="{{ enrollment.put_marks|default:'' }}" 
+                                    min="0" max="20" step="0.5"
+                                    class="w-24 px-3 py-2 border border-gray-300 rounded-lg text-center">
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-6 flex space-x-4">
+                <button type="submit" 
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition">
+                    Save Marks
+                </button>
+                <a href="{% url 'teacher_dashboard' %}" 
+                    class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition">
+                    Back
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}View Attendance - {{ subject.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800">Attendance Records</h1>
+                <p class="text-gray-600 mt-1">{{ subject.name }} ({{ subject.code }})</p>
+            </div>
+            <a href="{% url 'teacher_mark_attendance' subject.id %}" 
+                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition">
+                ➕ Mark Attendance
+            </a>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-gray-700 font-semibold">Roll Number</th>
+                        <th class="px-6 py-3 text-left text-gray-700 font-semibold">Student Name</th>
+                        <th class="px-6 py-3 text-center text-gray-700 font-semibold">Total Classes</th>
+                        <th class="px-6 py-3 text-center text-gray-700 font-semibold">Present</th>
+                        <th class="px-6 py-3 text-center text-gray-700 font-semibold">Absent</th>
+                        <th class="px-6 py-3 text-center text-gray-700 font-semibold">Percentage</th>
+                        <th class="px-6 py-3 text-center text-gray-700 font-semibold">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for data in attendance_data %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4">{{ data.student.roll_number }}</td>
+                        <td class="px-6 py-4">{{ data.student.user.get_full_name }}</td>
+                        <td class="px-6 py-4 text-center">{{ data.total }}</td>
+                        <td class="px-6 py-4 text-center text-green-600 font-semibold">{{ data.present }}</td>
+                        <td class="px-6 py-4 text-center text-red-600 font-semibold">{{ data.absent }}</td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="text-lg font-bold {% if data.percentage >= 75 %}text-green-600{% elif data.percentage >= 65 %}text-orange-600{% else %}text-red-600{% endif %}">
+                                {{ data.percentage }}%
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            {% if data.percentage >= 75 %}
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">Good</span>
+                            {% elif data.percentage >= 65 %}
+                            <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">Warning</span>
+                            {% else %}
+                            <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">Critical</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="px-6 py-8 text-center text-gray-500">
+                            No attendance records yet. <a href="{% url 'teacher_mark_attendance' subject.id %}" class="text-blue-600 hover:underline">Mark attendance</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="mt-6 flex space-x-4">
+            <a href="{% url 'teacher_dashboard' %}" 
+                class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg transition">
+                ← Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

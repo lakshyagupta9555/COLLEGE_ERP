@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Login - College ERP{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-500 to-purple-600">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+        <div class="text-center mb-8">
+            <h2 class="text-4xl font-bold text-gray-800 mb-2">Welcome Back!</h2>
+            <p class="text-gray-600">Login to your account</p>
+        </div>
+        
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Username</label>
+                <input type="text" name="username" required 
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Password</label>
+                <input type="password" name="password" required 
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+            </div>
+            
+            <button type="submit" 
+                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 rounded-lg transition transform hover:scale-105">
+                Login
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}Teacher Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold text-gray-800 mb-8">Teacher Dashboard</h1>
+    
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white">
+            <p class="text-blue-100 text-sm">My Subjects</p>
+            <h3 class="text-3xl font-bold">{{ subjects.count }}</h3>
+        </div>
+        <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
+            <p class="text-green-100 text-sm">Department</p>
+            <h3 class="text-2xl font-bold">{{ teacher.department.name }}</h3>
+        </div>
+        <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
+            <p class="text-purple-100 text-sm">Notices Posted</p>
+            <h3 class="text-3xl font-bold">{{ notices.count }}</h3>
+        </div>
+    </div>
+    
+    <!-- My Subjects -->
+    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">My Subjects</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for subject in subjects %}
+            <div class="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition">
+                <h3 class="font-bold text-lg text-gray-800">{{ subject.name }}</h3>
+                <p class="text-gray-600 text-sm mb-3">{{ subject.code }} | Sem {{ subject.semester }}</p>
+                <div class="space-y-2">
+                    <a href="{% url 'teacher_mark_attendance' subject.id %}" 
+                        class="block bg-blue-500 hover:bg-blue-600 text-white text-center py-2 rounded transition text-sm">
+                        ✓ Mark Attendance
+                    </a>
+                    <a href="{% url 'teacher_view_attendance' subject.id %}" 
+                        class="block bg-green-500 hover:bg-green-600 text-white text-center py-2 rounded transition text-sm">
+                        📊 View Attendance
+                    </a>
+                    <a href="{% url 'teacher_add_marks' subject.id %}" 
+                        class="block bg-purple-500 hover:bg-purple-600 text-white text-center py-2 rounded transition text-sm">
+                        📝 Add Marks
+                    </a>
+                    <a href="{% url 'teacher_view_marks' subject.id %}" 
+                        class="block bg-orange-500 hover:bg-orange-600 text-white text-center py-2 rounded transition text-sm">
+                        📋 View Marks
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-3 text-center py-8 text-gray-500">
+                No subjects assigned yet. Please contact the administrator.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="bg-white rounded-xl shadow-lg p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Quick Actions</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <a href="{% url 'teacher_select_subject_attendance' %}" 
+                class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg text-center transition">
+                ✓ Mark Attendance
+            </a>
+            <a href="{% url 'teacher_select_subject_marks' %}" 
+                class="bg-purple-500 hover:bg-purple-600 text-white font-medium py-3 px-4 rounded-lg text-center transition">
+                📝 Add Marks
+            </a>
+            <a href="{% url 'teacher_add_student' %}" 
+                class="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-4 rounded-lg text-center transition">
+                ➕ Add Student
+            </a>
+            <a href="{% url 'teacher_students' %}" 
+                class="bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 px-4 rounded-lg text-center transition">
+                👥 View Students
+            </a>
+            <a href="{% url 'teacher_add_notice' %}" 
+                class="bg-pink-500 hover:bg-pink-600 text-white font-medium py-3 px-4 rounded-lg text-center transition">
+                📢 Post Notice
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

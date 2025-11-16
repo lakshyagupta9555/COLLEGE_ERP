@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}Add Subject{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-xl shadow-lg p-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Add New Subject</h1>
+        
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Subject Code *</label>
+                    {{ form.code }}
+                    {% if form.code.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.code.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Subject Name *</label>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.name.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Semester *</label>
+                    {{ form.semester }}
+                    {% if form.semester.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.semester.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Department *</label>
+                    {{ form.department }}
+                    {% if form.department.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.department.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Credits *</label>
+                    {{ form.credits }}
+                    {% if form.credits.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.credits.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label class="flex items-center space-x-2 mt-8">
+                        {{ form.is_lab }}
+                        <span class="text-gray-700 font-medium">Is Lab Subject?</span>
+                    </label>
+                    {% if form.is_lab.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.is_lab.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="flex space-x-4">
+                <button type="submit" 
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition">
+                    Add Subject
+                </button>
+                <a href="{% url 'admin_subjects' %}" 
+                    class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

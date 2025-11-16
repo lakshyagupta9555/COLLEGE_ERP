@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}Student Attendance - {{ student.roll_number }}{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-800">Student Attendance Details</h1>
+            <div class="mt-2 text-gray-600">
+                <p><strong>Student:</strong> {{ student.user.get_full_name }}</p>
+                <p><strong>Roll Number:</strong> {{ student.roll_number }}</p>
+                <p><strong>Department:</strong> {{ student.department.name }}</p>
+                <p><strong>Semester:</strong> {{ student.semester }}</p>
+            </div>
+        </div>
+        
+        {% for record in attendance_records %}
+        <div class="mb-8 border border-gray-200 rounded-lg p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">{{ record.subject.name }}</h2>
+                <span class="text-2xl font-bold {% if record.percentage >= 75 %}text-green-600{% elif record.percentage >= 65 %}text-orange-600{% else %}text-red-600{% endif %}">
+                    {{ record.percentage }}%
+                </span>
+            </div>
+            
+            <div class="grid grid-cols-3 gap-4 mb-4">
+                <div class="bg-blue-50 rounded-lg p-4">
+                    <p class="text-sm text-gray-600">Total Classes</p>
+                    <p class="text-2xl font-bold text-blue-600">{{ record.total }}</p>
+                </div>
+                <div class="bg-green-50 rounded-lg p-4">
+                    <p class="text-sm text-gray-600">Present</p>
+                    <p class="text-2xl font-bold text-green-600">{{ record.present }}</p>
+                </div>
+                <div class="bg-red-50 rounded-lg p-4">
+                    <p class="text-sm text-gray-600">Absent</p>
+                    <p class="text-2xl font-bold text-red-600">{{ record.total|add:"-"|add:record.present }}</p>
+                </div>
+            </div>
+            
+            <h3 class="font-semibold text-gray-700 mb-2">Recent Attendance (Last 10 Classes)</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-2 text-left text-sm text-gray-600">Date</th>
+                            <th class="px-4 py-2 text-center text-sm text-gray-600">Status</th>
+                            <th class="px-4 py-2 text-left text-sm text-gray-600">Marked By</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        {% for att in record.records %}
+                        <tr>
+                            <td class="px-4 py-2 text-sm">{{ att.date }}</td>
+                            <td class="px-4 py-2 text-center">
+                                {% if att.is_present %}
+                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">Present</span>
+                                {% else %}
+                                <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-medium">Absent</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-4 py-2 text-sm">{{ att.marked_by.user.get_full_name }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="px-4 py-4 text-center text-gray-500 text-sm">No attendance records</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-gray-500 py-8">No attendance data available for this student.</p>
+        {% endfor %}
+        
+        <div class="mt-6">
+            <a href="{% url 'teacher_students' %}" 
+                class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg transition">
+                ← Back to Students
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}Edit External Marks{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-xl shadow-lg p-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Edit External Marks</h1>
+        
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <p class="text-gray-700"><strong>Subject:</strong> {{ enrollment.subject.name }}</p>
+            <p class="text-gray-700"><strong>Code:</strong> {{ enrollment.subject.code }}</p>
+        </div>
+        
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            
+            <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="font-bold text-lg text-gray-800 mb-4">Internal Marks (Set by Teacher)</h3>
+                
+                {% if enrollment.subject.is_lab %}
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-600 text-sm mb-1">Practical Marks</label>
+                        <input type="text" value="{{ enrollment.practical_marks|default:'Not assigned yet' }}" disabled
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 text-sm mb-1">Total Internal</label>
+                        <input type="text" value="{{ enrollment.calculate_internal }}" disabled
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white font-bold">
+                    </div>
+                </div>
+                {% else %}
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-gray-600 text-sm mb-1">Mid-1 (20)</label>
+                        <input type="text" value="{{ enrollment.mid1_marks|default:'Not assigned' }}" disabled
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 text-sm mb-1">Mid-2 (20)</label>
+                        <input type="text" value="{{ enrollment.mid2_marks|default:'Not assigned' }}" disabled
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 text-sm mb-1">PUT (20)</label>
+                        <input type="text" value="{{ enrollment.put_marks|default:'Not assigned' }}" disabled
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 text-sm mb-1">Total Internal</label>
+                        <input type="text" value="{{ enrollment.calculate_internal }}" disabled
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white font-bold">
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">External Marks (Out of 100) *</label>
+                <input type="number" name="external_marks" 
+                    value="{{ enrollment.external_marks|default:'' }}" 
+                    min="0" max="100" step="0.5" required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter external marks">
+                <p class="text-sm text-gray-600 mt-2">Enter the marks obtained in the external/final examination</p>
+            </div>
+            
+            {% if enrollment.total_marks %}
+            <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                <p class="text-gray-700 text-lg">
+                    <strong>Current Total Marks:</strong> 
+                    <span class="text-2xl font-bold text-green-600">{{ enrollment.total_marks }}</span> / 160
+                </p>
+            </div>
+            {% endif %}
+            
+            <div class="flex space-x-4">
+                <button type="submit" 
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition">
+                    💾 Save External Marks
+                </button>
+                <a href="{% url 'student_dashboard' %}" 
+                    class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

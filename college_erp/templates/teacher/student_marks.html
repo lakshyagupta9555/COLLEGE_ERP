@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block title %}Student Marks - {{ student.roll_number }}{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-800">Complete Marks Report</h1>
+            <div class="mt-3 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div>
+                    <p class="text-sm text-gray-600">Student Name</p>
+                    <p class="font-semibold text-gray-800">{{ student.user.get_full_name }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Roll Number</p>
+                    <p class="font-semibold text-gray-800">{{ student.roll_number }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Department</p>
+                    <p class="font-semibold text-gray-800">{{ student.department.name }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Semester</p>
+                    <p class="font-semibold text-gray-800">{{ student.semester }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Overall Performance -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-blue-50 rounded-lg p-4">
+                <p class="text-sm text-gray-600">Total Obtained</p>
+                <p class="text-2xl font-bold text-blue-600">{{ total_obtained }}</p>
+            </div>
+            <div class="bg-green-50 rounded-lg p-4">
+                <p class="text-sm text-gray-600">Overall %</p>
+                <p class="text-2xl font-bold text-green-600">{{ overall_percentage }}%</p>
+            </div>
+            <div class="bg-purple-50 rounded-lg p-4">
+                <p class="text-sm text-gray-600">SGPA</p>
+                <p class="text-2xl font-bold text-purple-600">{{ sgpa }}</p>
+            </div>
+            <div class="bg-orange-50 rounded-lg p-4">
+                <p class="text-sm text-gray-600">CGPA</p>
+                <p class="text-2xl font-bold text-orange-600">{{ cgpa }}</p>
+            </div>
+        </div>
+        
+        <!-- Subject-wise Marks -->
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Subject-wise Performance</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-4 py-3 text-left text-gray-700 font-semibold">Subject</th>
+                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">Mid-1</th>
+                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">Mid-2</th>
+                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">PUT</th>
+                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">Practical</th>
+                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">Internal</th>
+                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">External</th>
+                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">Total</th>
+                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">%</th>
+                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">Grade</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for mark in marks_summary %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3">
+                            <div class="font-semibold text-gray-800">{{ mark.subject.name }}</div>
+                            <div class="text-sm text-gray-600">{{ mark.subject.code }}</div>
+                        </td>
+                        <td class="px-4 py-3 text-center">{{ mark.mid1|default:'—' }}</td>
+                        <td class="px-4 py-3 text-center">{{ mark.mid2|default:'—' }}</td>
+                        <td class="px-4 py-3 text-center">{{ mark.put|default:'—' }}</td>
+                        <td class="px-4 py-3 text-center">{{ mark.practical|default:'—' }}</td>
+                        <td class="px-4 py-3 text-center font-semibold text-blue-600">{{ mark.internal }}</td>
+                        <td class="px-4 py-3 text-center">{{ mark.external|default:'—' }}</td>
+                        <td class="px-4 py-3 text-center font-bold text-green-600">{{ mark.total }}</td>
+                        <td class="px-4 py-3 text-center">
+                            <span class="font-semibold {% if mark.percentage >= 60 %}text-green-600{% elif mark.percentage >= 40 %}text-orange-600{% else %}text-red-600{% endif %}">
+                                {{ mark.percentage }}%
+                            </span>
+                        </td>
+                        <td class="px-4 py-3 text-center">
+                            <span class="px-3 py-1 rounded-full text-sm font-medium
+                                {% if mark.grade == 'A+' or mark.grade == 'A' %}bg-green-100 text-green-800
+                                {% elif mark.grade == 'B+' or mark.grade == 'B' %}bg-blue-100 text-blue-800
+                                {% elif mark.grade == 'C' %}bg-yellow-100 text-yellow-800
+                                {% elif mark.grade == 'D' %}bg-orange-100 text-orange-800
+                                {% else %}bg-red-100 text-red-800{% endif %}">
+                                {{ mark.grade }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="10" class="px-6 py-8 text-center text-gray-500">
+                            No marks data available.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="mt-6 flex space-x-4">
+            <a href="{% url 'teacher_students' %}" 
+                class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg transition">
+                ← Back to Students
+            </a>
+            <a href="{% url 'teacher_download_scorecard' student.id %}" 
+                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition">
+                📄 Download Scorecard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
