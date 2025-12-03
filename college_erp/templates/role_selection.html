@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College ERP - Select Your Role</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .role-card {
+            transition: all 0.3s ease;
+        }
+        .role-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen flex items-center justify-center">
+    <div class="container mx-auto px-4 py-8">
+        <div class="text-center mb-12">
+            <h1 class="text-5xl md:text-6xl font-bold text-white mb-4">
+                🎓 Centralized Academic Services
+            </h1>
+            <p class="text-xl text-gray-400">Select your role to continue</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <!-- Student Card -->
+            <a href="{% url 'student_login' %}" class="role-card bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl p-8 text-center hover:bg-gray-750 hover:border-blue-500">
+                <div class="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/50">
+                    <i class="fas fa-user-graduate text-white text-6xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-white mb-3">Student</h2>
+                <p class="text-gray-400 mb-4">Access your courses, grades, and attendance</p>
+                <div class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-full font-semibold transition">
+                    Login →
+                </div>
+            </a>
+            
+            <!-- Faculty Card -->
+            <a href="{% url 'teacher_login' %}" class="role-card bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl p-8 text-center hover:bg-gray-750 hover:border-green-500">
+                <div class="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-lg shadow-green-500/50">
+                    <i class="fas fa-chalkboard-teacher text-white text-6xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-white mb-3">Faculty</h2>
+                <p class="text-gray-400 mb-4">Manage classes, students, and assessments</p>
+                <div class="inline-block bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full font-semibold transition">
+                    Login →
+                </div>
+            </a>
+            
+            <!-- Admin Card -->
+            <a href="{% url 'admin_login' %}" class="role-card bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl p-8 text-center hover:bg-gray-750 hover:border-purple-500">
+                <div class="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg shadow-purple-500/50">
+                    <i class="fas fa-user-shield text-white text-6xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-white mb-3">Admin</h2>
+                <p class="text-gray-400 mb-4">System administration and management</p>
+                <div class="inline-block bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 rounded-full font-semibold transition">
+                    Login →
+                </div>
+            </a>
+        </div>
+        
+        <div class="text-center mt-12">
+            <p class="text-gray-500 text-sm">© 2025 Centralized Academic Services. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

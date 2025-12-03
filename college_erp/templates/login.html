@@ -1,30 +1,53 @@
 {% extends 'base.html' %}
-{% block title %}Login - College ERP{% endblock %}
+{% block title %}{{ role|default:"Login" }} - College ERP{% endblock %}
 
 {% block content %}
-<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-500 to-purple-600">
-    <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+    <div class="bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl p-8 w-full max-w-md relative">
+        <!-- Back Button -->
+        <a href="{% url 'role_selection' %}" class="absolute top-4 left-4 text-gray-400 hover:text-white transition">
+            <i class="fas fa-arrow-left text-xl"></i>
+        </a>
+        
         <div class="text-center mb-8">
-            <h2 class="text-4xl font-bold text-gray-800 mb-2">Welcome Back!</h2>
-            <p class="text-gray-600">Login to your account</p>
+            {% if role %}
+            <div class="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-{{ role_color }}-500 to-{{ role_color }}-600 rounded-full flex items-center justify-center shadow-lg shadow-{{ role_color }}-500/50">
+                <i class="fas {{ role_icon }} text-white text-3xl"></i>
+            </div>
+            <h2 class="text-4xl font-bold text-white mb-2">{{ role }} Login</h2>
+            <p class="text-gray-400">Enter your credentials to continue</p>
+            {% else %}
+            <h2 class="text-4xl font-bold text-white mb-2">Welcome Back!</h2>
+            <p class="text-gray-400">Login to your account</p>
+            {% endif %}
         </div>
+        
+        {% if messages %}
+        <div class="mb-4">
+            {% for message in messages %}
+            <div class="bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded mb-2">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
         
         <form method="POST" class="space-y-6">
             {% csrf_token %}
             <div>
-                <label class="block text-gray-700 font-medium mb-2">Username</label>
+                <label class="block text-gray-300 font-medium mb-2">Username</label>
                 <input type="text" name="username" required 
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                    class="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-{{ role_color|default:"blue" }}-500 focus:border-transparent transition placeholder-gray-400">
             </div>
             
             <div>
-                <label class="block text-gray-700 font-medium mb-2">Password</label>
+                <label class="block text-gray-300 font-medium mb-2">Password</label>
                 <input type="password" name="password" required 
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                    class="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-{{ role_color|default:"blue" }}-500 focus:border-transparent transition placeholder-gray-400">
             </div>
             
             <button type="submit" 
-                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 rounded-lg transition transform hover:scale-105">
+                class="w-full bg-gradient-to-r from-{{ role_color|default:"blue" }}-600 to-{{ role_color|default:"blue" }}-700 hover:from-{{ role_color|default:"blue" }}-700 hover:to-{{ role_color|default:"blue" }}-800 text-white font-bold py-3 rounded-lg transition transform hover:scale-105 shadow-lg shadow-{{ role_color|default:"blue" }}-500/50">
                 Login
             </button>
         </form>

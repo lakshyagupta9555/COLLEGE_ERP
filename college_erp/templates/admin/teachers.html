@@ -3,12 +3,15 @@
 
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 py-8">
+    <a href="{% url 'admin_dashboard' %}" class="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6">
+        <span class="mr-2">←</span> Back to Dashboard
+    </a>
     <div class="bg-white rounded-xl shadow-lg p-6">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-gray-800">All Teachers</h1>
             <a href="{% url 'admin_add_teacher' %}" 
-                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition">
-                ➕ Add New Teacher
+                class="btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition">
+                Add Teacher
             </a>
         </div>
         
@@ -37,12 +40,12 @@
                         <td class="px-6 py-4">
                             <div class="flex justify-center space-x-2">
                                 <a href="{% url 'admin_edit_teacher' teacher.id %}" 
-                                    class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded transition">
+                                    class="btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded transition">
                                     Edit
                                 </a>
                                 <a href="{% url 'admin_delete_teacher' teacher.id %}" 
                                     onclick="return confirm('Are you sure you want to delete this teacher?')"
-                                    class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition">
+                                    class="btn bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition">
                                     Delete
                                 </a>
                             </div>

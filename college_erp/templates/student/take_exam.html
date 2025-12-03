@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block title %}{{ exam.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-4">{{ exam.title }}</h1>
+    <p class="text-gray-600 mb-4">{{ exam.description }}</p>
+    <p class="text-sm text-gray-500 mb-6">Time remaining: <span id="timer">--:--</span></p>
+
+    <form method="post" id="examForm">
+        {% csrf_token %}
+        <input type="hidden" name="proctor_log" id="proctor_log" value="">
+        <div class="space-y-6">
+            {% for q in questions %}
+            <div class="bg-white p-4 rounded shadow">
+                <p class="font-semibold">Q{{ forloop.counter }}. {{ q.text }}</p>
+                {% if q.question_type == "mcq" and q.choices %}
+                <div class="mt-2 space-y-2">
+                    {% for choice in q.choices %}
+                    <label class="flex items-center space-x-3">
+                        <input type="radio" name="q_{{ q.id }}" value="{{ choice|escape }}" class="form-radio">
+                        <span>{{ choice }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <textarea name="q_{{ q.id }}" rows="4" class="w-full px-3 py-2 border rounded mt-2"></textarea>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="mt-6 flex items-center space-x-4">
+            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Submit Exam</button>
+            <a href="{% url 'student_online_exams' %}" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+// Simple client-side proctoring helpers
+let proctorEvents = [];
+window.addEventListener('blur', () => {
+    proctorEvents.push({event: 'blur', t: new Date().toISOString()});
+});
+window.addEventListener('focus', () => {
+    proctorEvents.push({event: 'focus', t: new Date().toISOString()});
+});
+window.addEventListener('keydown', (e) => {
+    // capture F11 (fullscreen), Esc etc.
+    if (e.key === 'F11' || e.key === 'Escape') {
+        proctorEvents.push({event: 'key', key: e.key, t: new Date().toISOString()});
+    }
+});
+
+// Timer
+// Safely inject remaining seconds and parse as integer to avoid JS syntax errors
+let remaining = parseInt("{{ remaining_seconds|default_if_none:0 }}", 10) || 0;
+function updateTimer() {
+    if (remaining <= 0) {
+        document.getElementById('timer').innerText = '00:00';
+        // Auto submit
+        document.getElementById('proctor_log').value = JSON.stringify(proctorEvents);
+        document.getElementById('examForm').submit();
+        return;
+    }
+    let minutes = Math.floor(remaining/60);
+    let seconds = remaining % 60;
+    document.getElementById('timer').innerText = String(minutes).padStart(2,'0') + ':' + String(seconds).padStart(2,'0');
+    remaining -= 1;
+}
+setInterval(updateTimer, 1000);
+updateTimer();
+
+// On submit attach proctor log
+document.getElementById('examForm').addEventListener('submit', function(e){
+    document.getElementById('proctor_log').value = JSON.stringify(proctorEvents);
+});
+
+// discourage navigation
+window.addEventListener('beforeunload', function (e) {
+    // Note: modern browsers may ignore custom messages
+    e.preventDefault();
+    e.returnValue = '';
+});
+</script>
+{% endblock %}

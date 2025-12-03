@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Confirm Delete{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">Confirm Delete</h1>
+    <div class="bg-white p-6 rounded shadow">
+        <p>Are you sure you want to delete the exam "<strong>{{ exam.title }}</strong>" scheduled <br/>on {{ exam.start_time|date:'M d, Y H:i' }}?</p>
+        <div class="mt-4">
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Yes, delete</button>
+                <a href="{% url 'teacher_schedule_exam' %}" class="ml-2 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

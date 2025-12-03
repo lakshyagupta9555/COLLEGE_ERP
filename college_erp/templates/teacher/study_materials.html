@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Study Materials{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Study Materials / Notes</h1>
+        <div class="space-x-3">
+            <a href="{% url 'teacher_dashboard' %}" class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition">
+                ← Back
+            </a>
+            <a href="{% url 'teacher_upload_material' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition">
+                + Upload Material
+            </a>
+        </div>
+    </div>
+
+    {% if materials %}
+    <div class="grid grid-cols-1 gap-4">
+        {% for material in materials %}
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
+            <div class="flex justify-between items-start">
+                <div class="flex-1">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">{{ material.title }}</h3>
+                    <p class="text-gray-600 mb-2">{{ material.description }}</p>
+                    <div class="flex flex-wrap gap-3 text-sm">
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
+                            📚 {{ material.subject.code }} - {{ material.subject.name }}
+                        </span>
+                        {% if material.section %}
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full">
+                            Section {{ material.section }}
+                        </span>
+                        {% else %}
+                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full">
+                            All Sections
+                        </span>
+                        {% endif %}
+                        <span class="text-gray-500">
+                            📅 {{ material.uploaded_at|date:"M d, Y" }}
+                        </span>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2 ml-4">
+                    <a href="{{ material.file.url }}" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition text-center">
+                        📥 Download
+                    </a>
+                    <a href="{% url 'teacher_edit_material' material.id %}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition text-center">
+                        ✏️ Edit
+                    </a>
+                    <a href="{% url 'teacher_delete_material' material.id %}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition text-center">
+                        🗑️ Delete
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-white rounded-xl shadow-lg p-12 text-center">
+        <div class="text-gray-400 text-6xl mb-4">📚</div>
+        <p class="text-gray-600 text-lg mb-4">No study materials uploaded yet</p>
+        <a href="{% url 'teacher_upload_material' %}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition">
+            Upload Your First Material
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

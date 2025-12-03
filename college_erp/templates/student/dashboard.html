@@ -3,92 +3,148 @@
 
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold text-gray-800 mb-8">Student Dashboard</h1>
-    
-    <!-- Quick Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white">
-            <p class="text-blue-100 text-sm">Attendance</p>
-            <h3 class="text-3xl font-bold">{{ attendance_percentage }}%</h3>
-        </div>
-        <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
-            <p class="text-green-100 text-sm">SGPA</p>
-            <h3 class="text-3xl font-bold">{{ sgpa }}</h3>
-        </div>
-        <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
-            <p class="text-purple-100 text-sm">CGPA</p>
-            <h3 class="text-3xl font-bold">{{ cgpa }}</h3>
-        </div>
-        <div class="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-lg p-6 text-white">
-            <p class="text-orange-100 text-sm">Semester</p>
-            <h3 class="text-3xl font-bold">{{ student.semester }}</h3>
-        </div>
-    </div>
-    
-    <!-- Internal Marks -->
-    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">Internal Marks</h2>
-        <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="px-4 py-3 text-left text-gray-700">Subject</th>
-                        <th class="px-4 py-3 text-center text-gray-700">Mid-1</th>
-                        <th class="px-4 py-3 text-center text-gray-700">Mid-2</th>
-                        <th class="px-4 py-3 text-center text-gray-700">PUT</th>
-                        <th class="px-4 py-3 text-center text-gray-700">Practical</th>
-                        <th class="px-4 py-3 text-center text-gray-700">External</th>
-                        <th class="px-4 py-3 text-center text-gray-700">Total</th>
-                        <th class="px-4 py-3 text-center text-gray-700">Action</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200">
-                    {% for enrollment in enrollments %}
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-3">{{ enrollment.subject.name }}</td>
-                        <td class="px-4 py-3 text-center">{{ enrollment.mid1_marks|default:'-' }}</td>
-                        <td class="px-4 py-3 text-center">{{ enrollment.mid2_marks|default:'-' }}</td>
-                        <td class="px-4 py-3 text-center">{{ enrollment.put_marks|default:'-' }}</td>
-                        <td class="px-4 py-3 text-center">{{ enrollment.practical_marks|default:'-' }}</td>
-                        <td class="px-4 py-3 text-center">{{ enrollment.external_marks|default:'-' }}</td>
-                        <td class="px-4 py-3 text-center font-bold">{{ enrollment.total_marks|default:'-' }}</td>
-                        <td class="px-4 py-3 text-center">
-                            <a href="{% url 'student_edit_external_marks' enrollment.id %}" 
-                                class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
-                                Edit External
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-    
-    <!-- Notices -->
-    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">📢 Notice Board</h2>
-        <div class="space-y-4">
-            {% for notice in notices %}
-            <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded">
-                <h3 class="font-bold text-lg text-gray-800">{{ notice.title }}</h3>
-                <p class="text-gray-600 mt-2">{{ notice.content }}</p>
-                <p class="text-sm text-gray-500 mt-2">Posted on {{ notice.created_at|date:"M d, Y" }}</p>
+    <h1 class="text-4xl font-bold text-gray-800 mb-4">Student Dashboard</h1>
+    <div class="md:flex md:items-start md:gap-6">
+        <div class="flex-1">
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-gradient-to-br from-pink-500 to-orange-600 rounded-xl shadow-lg p-6 text-white">
+                    <p class="text-blue-100 text-sm">Attendance</p>
+                    <h3 class="text-3xl font-bold">{{ attendance_percentage }}%</h3>
+                </div>
+                <div class="bg-gradient-to-br from-pink-500 to-orange-600 rounded-xl shadow-lg p-6 text-white">
+                    <p class="text-green-100 text-sm">SGPA</p>
+                    <h3 class="text-3xl font-bold">{{ sgpa }}</h3>
+                </div>
+                <div class="bg-gradient-to-br from-pink-500 to-orange-600 rounded-xl shadow-lg p-6 text-white">
+                    <p class="text-purple-100 text-sm">CGPA</p> 
+                    <h3 class="text-3xl font-bold">{{ cgpa }}</h3>
+                </div>
+                <div class="bg-gradient-to-br from-pink-500 to-orange-600 rounded-xl shadow-lg p-6 text-white">
+                    <p class="text-orange-100 text-sm">Semester</p>
+                    <h3 class="text-3xl font-bold">{{ student.semester }}</h3>
+                </div>
             </div>
-            {% endfor %}
+            {% comment %} from-pink-500 to-purple-600 from-pink-500 to-green-600 from-pink-500 to-blue-600 {% endcomment %}
+            <!-- Profile Summary -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Your Profile</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                    <div>
+                        <p class="text-sm text-gray-600">Name</p>
+                        <p class="font-semibold">{{ student.user.get_full_name }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Degree</p>
+                        <p class="font-semibold">{{ student.degree|default:'-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Branch</p>
+                        {% if student.department %}
+                        <p class="font-semibold">{{ student.department.name }}</p>
+                        {% else %}
+                        <p class="font-semibold">-</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Roll No.</p>
+                        <p class="font-semibold">{{ student.roll_number }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Section</p>
+                        <p class="font-semibold">{{ student.section|default:'-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Current Semester</p>
+                        <p class="font-semibold">{{ student.semester }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            <!-- Internal Marks -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Internal Marks</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-gray-700">Subject</th>
+                                <th class="px-4 py-3 text-center text-gray-700">Mid-1</th>
+                                <th class="px-4 py-3 text-center text-gray-700">Mid-2</th>
+                                <th class="px-4 py-3 text-center text-gray-700">PUT</th>
+                                <th class="px-4 py-3 text-center text-gray-700">Practical</th>
+                                <th class="px-4 py-3 text-center text-gray-700">External</th>
+                                <th class="px-4 py-3 text-center text-gray-700">Total</th>
+                                <th class="px-4 py-3 text-center text-gray-700">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            {% for enrollment in enrollments %}
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3">{{ enrollment.subject.name }}</td>
+                                <td class="px-4 py-3 text-center">{{ enrollment.mid1_marks|default:'-' }}</td>
+                                <td class="px-4 py-3 text-center">{{ enrollment.mid2_marks|default:'-' }}</td>
+                                <td class="px-4 py-3 text-center">{{ enrollment.put_marks|default:'-' }}</td>
+                                <td class="px-4 py-3 text-center">{{ enrollment.practical_marks|default:'-' }}</td>
+                                <td class="px-4 py-3 text-center">{{ enrollment.external_marks|default:'-' }}</td>
+                                <td class="px-4 py-3 text-center font-bold">{{ enrollment.total_marks|default:'-' }}</td>
+                                <td class="px-4 py-3 text-center">
+                                    <a href="{% url 'student_edit_external_marks' enrollment.id %}" 
+                                        class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                                        Edit External
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Notices -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">📢 Notice Board</h2>
+                <div class="space-y-4">
+                    {% for notice in notices %}
+                    <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded">
+                        <h3 class="font-bold text-lg text-gray-800">{{ notice.title }}</h3>
+                        <p class="text-gray-600 mt-2">{{ notice.content }}</p>
+                        <p class="text-sm text-gray-500 mt-2">Posted on {{ notice.created_at|date:"M d, Y" }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
-    </div>
-    
-    <!-- Quick Links -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <a href="{% url 'student_attendance_details' %}" 
-            class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-4 px-6 rounded-lg text-center transition">
-            📊 View Attendance Details
-        </a>
-        <a href="{% url 'student_placement_cell' %}" 
-            class="bg-green-500 hover:bg-green-600 text-white font-medium py-4 px-6 rounded-lg text-center transition">
-            💼 Training & Placement
-        </a>
+        <aside class="md:w-56 mt-6 md:mt-0">
+            <div class="space-y-4 sticky top-24">
+                <a href="{% url 'student_attendance_details' %}" 
+                    class="block bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg text-center transition">
+                    📊 View Attendance Details
+                </a>
+                <a href="{% url 'student_placement_cell' %}" 
+                    class="block bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-4 rounded-lg text-center transition">
+                    💼 Training & Placement
+                </a>
+                <a href="{% url 'student_fees_dashboard' %}"
+                    class="block bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-4 rounded-lg text-center transition">
+                    💰 Pay / View Fees
+                </a>
+                <a href="{% url 'student_online_exams' %}"
+                    class="block bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-3 px-4 rounded-lg text-center transition">
+                    📝 Online Exams
+                </a>
+                <a href="{% url 'student_timetable' %}"
+                    class="block bg-indigo-700 hover:bg-indigo-800 text-white font-medium py-3 px-4 rounded-lg text-center transition">
+                    📅 Show Timetable
+                </a>
+                <a href="{% url 'student_study_materials' %}"
+                    class="block bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-4 rounded-lg text-center transition">
+                    📚 Study Materials
+                </a>
+            </div>
+        </aside>
     </div>
 </div>
 {% endblock %}

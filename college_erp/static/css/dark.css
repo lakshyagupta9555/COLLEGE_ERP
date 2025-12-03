@@ -1,0 +1,229 @@
+/* Dark mode overrides for Tailwind utility classes and common components
+   This file uses high-specificity rules with !important to override utility classes
+   served by Tailwind so the site appears in a cohesive dark theme.
+*/
+
+/* Page background and default text */
+body.bg-gray-50, body {
+  background-color: #0b1220 !important; /* very dark blue-gray */
+  color: #dbe7ff !important; /* light text */
+}
+
+/* Cards and white backgrounds */
+.bg-white {
+  background-color: #0f1724 !important; /* dark card */
+}
+
+/* Borders */
+.border-gray-200, .border {
+  border-color: #28323f !important;
+}
+
+/* Text color utility overrides */
+.text-gray-800 {
+  color: #e6eefc !important;
+}
+.text-gray-700 {
+  color: #cddbf7 !important;
+}
+.text-gray-600 {
+  color: #aebbd6 !important;
+}
+.text-gray-500 {
+  color: #98a7c2 !important;
+}
+
+/* Headings and emphasized text */
+.font-bold, h1, h2, h3, h4 {
+  color: #ffffff !important;
+}
+
+/* Nav bar override (was blue gradient) */
+nav, .nav, .navbar {
+  background: linear-gradient(90deg, #0f1724 0%, #071022 100%) !important;
+}
+
+/* Footer */
+footer.bg-gray-800 {
+  background-color: #071022 !important;
+  color: #cbd7ee !important;
+}
+
+/* Buttons with colored backgrounds (blue, red, green) — make them slightly muted on dark */
+.bg-blue-500, .from-blue-600, .to-blue-800, .bg-blue-600 {
+  background-color: #2563eb !important; /* moderate blue */
+  color: #ffffff !important;
+}
+.bg-blue-50 {
+  background-color: rgba(37,99,235,0.08) !important;
+}
+
+/* Light green panels (resume area) */
+.bg-green-50 {
+  background-color: rgba(16,185,129,0.06) !important;
+  color: #dff7ea !important;
+}
+
+/* Generic light gray panels */
+.bg-gray-50 {
+  background-color: #071226 !important;
+  color: #cddbf7 !important;
+}
+
+/* Border color overrides for light panels */
+.border-green-200 {
+  border-color: rgba(16,185,129,0.18) !important;
+}
+.border-blue-200 {
+  border-color: rgba(59,130,246,0.14) !important;
+}
+.border-gray-200 {
+  border-color: #223145 !important;
+}
+.bg-red-500, .bg-red-600 {
+  background-color: #ef4444 !important;
+  color: #fff !important;
+}
+.bg-green-600, .bg-green-500 {
+  background-color: #16a34a !important;
+  color: #fff !important;
+}
+
+/* Alerts (success/error/info) */
+.bg-red-100 {
+  background-color: rgba(239,68,68,0.08) !important;
+  color: #ffdad6 !important;
+  border-color: rgba(239,68,68,0.25) !important;
+}
+.bg-green-100 {
+  background-color: rgba(16,185,129,0.08) !important;
+  color: #dff7ea !important;
+  border-color: rgba(16,185,129,0.22) !important;
+}
+.bg-blue-100 {
+  background-color: rgba(37,99,235,0.06) !important;
+  color: #dbe9ff !important;
+  border-color: rgba(37,99,235,0.18) !important;
+}
+
+/* Input, tables, list backgrounds */
+.table, table, input, select, textarea {
+  background-color: #071022 !important;
+  color: #dbe7ff !important;
+  border-color: #223145 !important;
+}
+
+/* Utility for subtle card shadow in dark */
+.shadow-lg {
+  box-shadow: 0 6px 18px rgba(2,6,23,0.6) !important;
+}
+
+/* Links */
+a, .text-blue-600 {
+  color: #60a5fa !important;
+}
+
+/* Make images on light backgrounds visible */
+.img-light-bg {
+  filter: brightness(0.95) contrast(1.05) !important;
+}
+
+/* Specific tweaks for templates' known classes */
+/* Cards used in student attendance */
+.border.border-gray-200.rounded-lg.p-6 {
+  background-color: #0f1724 !important;
+  border-color: #243242 !important;
+}
+
+/* Ensure modal/backdrop readability */
+.modal, .dialog {
+  background-color: rgba(7,16,34,0.85) !important;
+  color: #e6eefc !important;
+}
+
+/* Keep form placeholders muted */
+::placeholder {
+  color: #9aa7c7 !important;
+}
+
+/* Small utilities */
+.text-red-600 { color: #fb7185 !important; }
+.text-green-600 { color: #4ade80 !important; }
+.text-2xl { color: inherit !important; }
+
+/* If you later add a toggle for light/dark, the .light-mode class can disable these overrides */
+.light-mode body, .light-mode .bg-white, .light-mode .text-gray-800 {
+  all: unset;
+}
+
+/* Hover state fixes: ensure hover doesn't make text invisible on dark backgrounds */
+a:hover, .hover\:text-blue-800:hover, .hover\:text-white:hover, .hover\:text-gray-800:hover, .hover\:text-blue-600:hover, .hover\:text-blue-500:hover, .hover\:text-gray-600:hover {
+  color: #93c5fd !important; /* light, readable blue */
+}
+
+/* Buttons/blocks that change background on hover should keep text readable */
+.hover\:bg-red-600:hover, .hover\:bg-blue-600:hover, .hover\:bg-gray-600:hover, .hover\:bg-gray-500:hover {
+  filter: brightness(1.05) !important;
+  color: #ffffff !important;
+}
+
+/* Generic hover for items that invert or dim colors */
+*:hover {
+  text-shadow: 0 0 0 rgba(0,0,0,0) !important;
+}
+
+/* Table-specific dark hover (fix for Internal Marks rows using `hover:bg-gray-50`) */
+.hover\:bg-gray-50:hover, tr.hover\:bg-gray-50:hover, tr:hover {
+  background-color: rgba(255,255,255,0.02) !important; /* subtle lightening */
+  color: #e6eefc !important;
+}
+
+/* Table header background override (was bg-gray-100) */
+.bg-gray-100 {
+  background-color: #081226 !important;
+  color: #cfe1ff !important;
+}
+
+/* Dividers in tables */
+.divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+  border-top-color: #1f2b3a !important;
+}
+
+/* BUTTON TEXT: Ensure buttons and colored action links keep white text and "pop" on hover
+   Target anchors/buttons that use Tailwind background utilities (class contains "bg-")
+   This keeps text white (even if templates include hover:text-* classes) and adds
+   a subtle transform + shadow so the element "pops" rather than changing color. */
+/* .btn helper: centralize button styling for primary actions */
+.btn {
+  color: #ffffff !important;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  text-decoration: none !important;
+  transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+  will-change: transform, box-shadow;
+}
+
+.btn:hover {
+  color: #ffffff !important; /* keep text white on hover */
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.6) !important;
+  filter: brightness(1.03) !important;
+  text-decoration: none !important;
+}
+
+/* Keep existing broad selector as a fallback for elements using bg- utility classes */
+a[class*="bg-"], button[class*="bg-"], input[type="submit"][class*="bg-"] {
+  color: #ffffff !important;
+}
+
+/* Also ensure small action links that are styled as buttons (px/py padding) keep white text */
+a[class*="px-"][class*="py-"], .action-link {
+  color: #ffffff !important;
+}
+
+/* Back-links or plain text links (not buttons) keep their original behavior; don't force white globally */
+.no-force-white-text, a.no-force-white-text {
+  color: inherit !important;
+}

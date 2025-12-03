@@ -16,9 +16,9 @@
                     {% if subject.is_lab %}
                     <option value="practical">Practical Marks (40)</option>
                     {% else %}
-                    <option value="mid1">Mid-1 Marks (20)</option>
-                    <option value="mid2">Mid-2 Marks (20)</option>
-                    <option value="put">PUT Marks (20)</option>
+                    <option value="mid1">Mid-1 Marks (30)</option>
+                    <option value="mid2">Mid-2 Marks (30)</option>
+                    <option value="put">PUT Marks (70)</option>
                     {% endif %}
                 </select>
             </div>
@@ -39,7 +39,7 @@
                             <td class="px-6 py-4">{{ enrollment.student.user.get_full_name }}</td>
                             <td class="px-6 py-4 text-center">
                                 <input type="number" name="marks_{{ enrollment.id }}" 
-                                    min="0" max="{% if subject.is_lab %}40{% else %}20{% endif %}" step="0.5"
+                                    min="0" max="{% if subject.is_lab %}40{% else %}70{% endif %}" step="0.5"
                                     class="w-32 px-4 py-2 border border-gray-300 rounded-lg text-center focus:ring-2 focus:ring-blue-500"
                                     placeholder="0.0">
                             </td>

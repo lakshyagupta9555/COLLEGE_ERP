@@ -30,13 +30,13 @@
                         {% if is_lab %}
                         <th class="px-4 py-3 text-center text-gray-700 font-semibold">Practical<br>(40)</th>
                         {% else %}
-                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">Mid-1<br>(20)</th>
-                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">Mid-2<br>(20)</th>
-                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">PUT<br>(20)</th>
+                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">Mid-1<br>(30)</th>
+                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">Mid-2<br>(30)</th>
+                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">PUT<br>(70)</th>
                         {% endif %}
-                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">Internal<br>(60)</th>
-                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">External<br>(100)</th>
-                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">Total<br>(160)</th>
+                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">Internal<br>({% if is_lab %}40{% else %}30{% endif %})</th>
+                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">External<br>(70)</th>
+                        <th class="px-4 py-3 text-center text-gray-700 font-semibold">Total<br>({% if is_lab %}110{% else %}100{% endif %})</th>
                         <th class="px-4 py-3 text-center text-gray-700 font-semibold">%</th>
                         <th class="px-4 py-3 text-center text-gray-700 font-semibold">Actions</th>
                     </tr>

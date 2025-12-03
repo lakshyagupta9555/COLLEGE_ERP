@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Online Exams{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Online Exams</h1>
+
+    <div class="mb-8">
+        <h2 class="text-xl font-semibold mb-3">Active Exams</h2>
+        {% if active_exams %}
+        <div class="space-y-4">
+            {% for exam in active_exams %}
+            <div class="bg-white rounded-lg p-4 shadow flex items-center justify-between">
+                <div>
+                    <h3 class="font-bold">{{ exam.title }}</h3>
+                    <p class="text-sm text-gray-600">{{ exam.description|default:'No description' }}</p>
+                    <p class="text-sm text-gray-500">Scheduled: {{ exam.start_time|date:'M d, Y H:i' }} - {{ exam.end_time|date:'M d, Y H:i' }}</p>
+                </div>
+                <div>
+                    {% if exam.id in submitted_exam_ids %}
+                        <span class="text-green-600 font-semibold">Submitted</span>
+                        <a href="{% url 'student_exam_result' exam.id %}" class="ml-3 text-sm text-indigo-600">View Result</a>
+                    {% else %}
+                        <a href="{% url 'student_take_exam' exam.id %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">Take Exam</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-600">No active exams at this time.</p>
+        {% endif %}
+    </div>
+
+    <div>
+        <h2 class="text-xl font-semibold mb-3">Upcoming Exams</h2>
+        {% if upcoming_exams %}
+        <div class="space-y-3">
+            {% for exam in upcoming_exams %}
+            <div class="bg-white rounded-lg p-4 shadow flex items-center justify-between">
+                <div>
+                    <h3 class="font-bold">{{ exam.title }}</h3>
+                    <p class="text-sm text-gray-600">{{ exam.start_time|date:'M d, Y H:i' }}</p>
+                </div>
+                <div>
+                    <span class="text-yellow-600 font-semibold">Upcoming</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-600">No upcoming exams.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

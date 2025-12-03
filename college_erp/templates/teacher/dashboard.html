@@ -80,6 +80,26 @@
                 class="bg-pink-500 hover:bg-pink-600 text-white font-medium py-3 px-4 rounded-lg text-center transition">
                 📢 Post Notice
             </a>
+            <a href="{% url 'teacher_schedule_exam' %}"
+                class="bg-teal-500 hover:bg-teal-600 text-white font-medium py-3 px-4 rounded-lg text-center transition">
+                🗓️ Schedule Exam
+            </a>
+            <a href="{% url 'teacher_allocate_weekly_timetable' %}"
+                class="bg-gray-800 hover:bg-black text-white font-medium py-3 px-4 rounded-lg text-center transition">
+                🕒 Allocate Timetable
+            </a>
+            <a href="{% url 'teacher_download_placement_data' %}"
+                class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg text-center transition">
+                📥 Download Placement Data
+            </a>
+            <a href="{% url 'teacher_download_resumes_zip' %}"
+                class="bg-gray-700 hover:bg-black text-white font-medium py-3 px-4 rounded-lg text-center transition">
+                🗂️ Download All Resumes (ZIP)
+            </a>
+            <a href="{% url 'teacher_study_materials' %}"
+                class="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-4 rounded-lg text-center transition">
+                📚 Manage Study Materials
+            </a>
         </div>
     </div>
 </div>

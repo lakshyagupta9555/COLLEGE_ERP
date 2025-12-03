@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}{% if is_edit %}Edit{% else %}Add{% endif %} Degree{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4 text-gray-100">{% if is_edit %}Edit{% else %}Add{% endif %} Degree</h1>
+    <div class="bg-gray-900 p-6 rounded shadow-lg text-gray-100">
+        <form method="post" class="degree-form">
+            {% csrf_token %}
+            <div class="space-y-4">
+                <div>
+                    <label class="block font-medium text-gray-200 mb-1">Name</label>
+                    <div class="mt-1">{{ form.name }}</div>
+                </div>
+                <div>
+                    <label class="block font-medium text-gray-200 mb-1">University</label>
+                    <div class="mt-1">{{ form.university_name }}</div>
+                </div>
+                <div>
+                    <label class="block font-medium text-gray-200 mb-1">Code</label>
+                    <div class="mt-1">{{ form.code }}</div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn bg-indigo-600">{% if is_edit %}Update{% else %}Add{% endif %}</button>
+                <a href="{% url 'admin_degrees' %}" class="btn bg-gray-600 ml-2">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

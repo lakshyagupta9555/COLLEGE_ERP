@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Timetable{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Timetable for {{ student.degree.name|default:'-' }} — Section {{ student.section|default:'-' }} — Semester {{ student.semester }}</h1>
+
+    {% if timetable %}
+    <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="overflow-x-auto">
+            <table class="w-full table-auto border-collapse">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="border px-3 py-2">Day / Lecture</th>
+                        {% for i in lectures %}
+                        <th class="border px-3 py-2">Lecture {{ i }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th class="border px-3 py-2">Time</th>
+                        <th class="border px-3 py-2">{{ timetable.lecture1|time:"H:i"|default:'-' }}</th>
+                        <th class="border px-3 py-2">{{ timetable.lecture2|time:"H:i"|default:'-' }}</th>
+                        <th class="border px-3 py-2">{{ timetable.lecture3|time:"H:i"|default:'-' }}</th>
+                        <th class="border px-3 py-2">{{ timetable.lecture4|time:"H:i"|default:'-' }}</th>
+                        <th class="border px-3 py-2">{{ timetable.lecture5|time:"H:i"|default:'-' }}</th>
+                        <th class="border px-3 py-2">{{ timetable.lecture6|time:"H:i"|default:'-' }}</th>
+                        <th class="border px-3 py-2">{{ timetable.lecture7|time:"H:i"|default:'-' }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in table_rows %}
+                    <tr>
+                        <td class="border px-3 py-2 font-semibold">{{ row.day|title }}</td>
+                        {% for cell in row.cells %}
+                        <td class="border px-3 py-2">
+                            {% if cell %}
+                                {{ cell.name }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="bg-white rounded-xl shadow-lg p-6 text-gray-600">
+        No timetable assigned for your degree/section/semester yet.
+    </div>
+    {% endif %}
+
+    <div class="mt-6">
+        <a href="{% url 'student_dashboard' %}" class="btn bg-gray-600">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Confirm Delete Degree{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">Confirm Delete Degree</h1>
+    <div class="bg-white p-6 rounded shadow">
+        <p>Are you sure you want to delete the degree "<strong>{{ degree.name }}</strong>"?</p>
+        <div class="mt-4">
+            <form method="post">{% csrf_token %}
+                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Yes, delete</button>
+                <a href="{% url 'admin_degrees' %}" class="ml-2 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Import Fees CSV{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-4">Import Fees (CSV)</h1>
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+        <p class="mb-4">Upload a CSV file with the following headers: <code>roll_number,title,amount,fine,rewards</code></p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-4">
+                <input type="file" name="csv_file" accept=".csv" class="w-full" />
+            </div>
+            <div class="flex gap-4">
+                <a href="{% url 'admin_dashboard' %}" class="btn bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded">Back to Dashboard</a>
+                <button type="submit" class="btn bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Upload</button>
+                <a href="{% url 'admin_fees_list' %}" class="btn bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded">Back to Fees List</a>
+            </div>
+        </form>
+    </div>
+    <div class="text-sm text-gray-600">If you need a template CSV, download the sample template below or export existing records to edit.</div>
+    <div class="mt-4">
+        <a href="{% url 'admin_download_fees_template' %}" class="btn bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded">Download Sample CSV Template</a>
+    </div>
+</div>
+{% endblock %}

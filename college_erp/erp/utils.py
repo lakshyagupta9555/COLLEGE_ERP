@@ -3,8 +3,13 @@ import io
 import re
 from .models import Attendance
 
-def calculate_ats_score(resume_file):
-    """Enhanced ATS score calculation based on multiple criteria"""
+def calculate_ats_score(resume_file, job_description=None):
+    """Enhanced ATS score calculation based on multiple criteria.
+
+    Args:
+        resume_file: file-like object for a PDF resume (readable)
+        job_description: optional string containing the job description to compare against
+    """
     try:
         pdf_reader = PyPDF2.PdfReader(io.BytesIO(resume_file.read()))
         text = ""
@@ -33,6 +38,30 @@ def calculate_ats_score(resume_file):
         # Award points based on unique skills found (up to 30 points)
         technical_score = min(len(skills_found) * 2, 30)
         score += technical_score
+
+        # 1.b Job Description match (optional) - bonus up to 20 points
+        jd_score = 0
+        if job_description:
+            jd_text = job_description.lower()
+            jd_skills = set()
+            for category, skills in technical_skills.items():
+                for skill in skills:
+                    if ' ' in skill:
+                        if skill in jd_text:
+                            jd_skills.add(skill)
+                    else:
+                        if re.search(r"\b" + re.escape(skill) + r"\b", jd_text):
+                            jd_skills.add(skill)
+
+            # if JD specified and it has skills, compute overlap
+            if jd_skills:
+                matched = skills_found.intersection(jd_skills)
+                try:
+                    ratio = len(matched) / len(jd_skills)
+                except Exception:
+                    ratio = 0
+                jd_score = min(round(ratio * 20), 20)
+                score += jd_score
         
         # 2. Contact Information (10 points)
         contact_score = 0
@@ -96,6 +125,55 @@ def get_attendance_percentage(student, subject=None):
         present = Attendance.objects.filter(student=student, is_present=True).count()
     
     return round((present / total * 100), 2) if total > 0 else 0
+
+
+def auto_enroll_student_subjects(student):
+    """
+    Automatically enrolls a student in all subjects for their department and semester.
+    Creates SubjectEnrollment records for subjects matching the student's department and semester.
+    
+    Args:
+        student: Student object to enroll in subjects
+    
+    Returns:
+        tuple: (number of enrollments created, number of enrollments updated)
+    """
+    from .models import Subject, SubjectEnrollment, Teacher
+    
+    if not student.department or not student.semester:
+        return (0, 0)
+    
+    # Get all subjects for the student's department and semester
+    subjects = Subject.objects.filter(
+        department=student.department,
+        semester=student.semester
+    )
+    
+    created_count = 0
+    updated_count = 0
+    
+    for subject in subjects:
+        # Find a teacher who teaches this subject
+        teachers = Teacher.objects.filter(subjects=subject)
+        teacher = teachers.first() if teachers.exists() else None
+        
+        # Create or update enrollment
+        enrollment, created = SubjectEnrollment.objects.get_or_create(
+            student=student,
+            subject=subject,
+            defaults={'teacher': teacher}
+        )
+        
+        if created:
+            created_count += 1
+        else:
+            # Update teacher if needed and enrollment already existed
+            if teacher and enrollment.teacher != teacher:
+                enrollment.teacher = teacher
+                enrollment.save()
+                updated_count += 1
+    
+    return (created_count, updated_count)
 
 
 print("College ERP Models, Forms, and Utils created successfully!")

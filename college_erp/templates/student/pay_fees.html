@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Pay Fees{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 py-8">
+    <a href="{% url 'student_fees_dashboard' %}" class="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6">
+        <span class="mr-2">←</span> Back to Fees
+    </a>
+    <h1 class="text-2xl font-bold mb-4">Pay Fees - {{ fees.get_title_display }}</h1>
+
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <p class="mb-4">Total: <strong>₹{{ fees.total_amount }}</strong></p>
+        <p class="mb-4">Already Paid: <strong>₹{{ fees.amount_paid }}</strong></p>
+        <p class="mb-6">Remaining: <strong class="text-red-600">₹{{ fees.amount_remaining }}</strong></p>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Amount (₹)</label>
+                    {{ form.amount }}
+                    {% if form.amount.errors %}<div class="text-red-500 text-sm">{{ form.amount.errors }}</div>{% endif %}
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Transaction ID</label>
+                    {{ form.transaction_id }}
+                    {% if form.transaction_id.errors %}<div class="text-red-500 text-sm">{{ form.transaction_id.errors }}</div>{% endif %}
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Payment Method</label>
+                    {{ form.payment_method }}
+                    {% if form.payment_method.errors %}<div class="text-red-500 text-sm">{{ form.payment_method.errors }}</div>{% endif %}
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Remarks</label>
+                    {{ form.remarks }}
+                </div>
+                <div class="flex gap-4">
+                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded">Pay</button>
+                    <a href="{% url 'student_fees_dashboard' %}" class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

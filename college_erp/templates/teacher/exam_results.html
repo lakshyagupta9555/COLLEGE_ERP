@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Results - {{ exam.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">Results for: {{ exam.title }}</h1>
+
+    <div class="mb-4">
+        <a href="{% url 'teacher_schedule_exam' %}" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded">Back</a>
+        <a href="?format=csv" class="ml-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">Download CSV</a>
+    </div>
+
+    {% if attempts %}
+    <div class="overflow-x-auto bg-white p-4 rounded shadow">
+        <table class="w-full text-left">
+            <thead>
+                <tr>
+                    <th class="px-3 py-2">Roll</th>
+                    <th class="px-3 py-2">Student</th>
+                    <th class="px-3 py-2">Score</th>
+                    <th class="px-3 py-2">Submitted At</th>
+                    <th class="px-3 py-2">Proctor Log</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y">
+                {% for a in attempts %}
+                <tr>
+                    <td class="px-3 py-2">{{ a.student.roll_number }}</td>
+                    <td class="px-3 py-2">{{ a.student.user.get_full_name }}</td>
+                    <td class="px-3 py-2">{{ a.score|default:'-' }}</td>
+                    <td class="px-3 py-2">{{ a.submitted_at|default:'-' }}</td>
+                    <td class="px-3 py-2"><pre class="whitespace-pre-wrap text-sm">{{ a.proctor_log|default:'' }}</pre></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="text-gray-600">No attempts submitted yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

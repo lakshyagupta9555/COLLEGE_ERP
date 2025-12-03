@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Result - {{ exam.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">Result: {{ exam.title }}</h1>
+    <p class="text-sm text-gray-600 mb-2">Submitted at: {{ attempt.submitted_at|default:'-' }}</p>
+    <p class="text-lg font-semibold mb-4">Score: {{ displayed_score }}</p>
+
+    <div class="bg-white p-4 rounded shadow">
+        <h2 class="font-bold mb-2">Question Breakdown</h2>
+        {% if breakdown %}
+        <div class="space-y-4">
+            {% for item in breakdown %}
+            <div class="p-3 border rounded">
+                <p class="font-medium">Q{{ forloop.counter }}. {{ item.question.text }}</p>
+                <p class="text-sm text-gray-600">Marks: {{ item.question.marks }}</p>
+                <p class="mt-2"><strong>Your answer:</strong> <span class="ml-2">{{ item.student_answer|default:'-' }}</span></p>
+                {% if item.question.question_type == 'mcq' %}
+                <p class="mt-1"><strong>Correct answer:</strong> <span class="ml-2">{{ item.correct_answer|default:'-' }}</span></p>
+                <p class="mt-1"><strong>Marks awarded:</strong> <span class="ml-2">{{ item.awarded|default:'-' }}</span></p>
+                {% else %}
+                <p class="mt-1 text-sm text-gray-600">Short-answer questions are not auto-graded here.</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-600">No questions found.</p>
+        {% endif %}
+    </div>
+
+    <div class="mt-4">
+        <a href="{% url 'student_online_exams' %}" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded">Back to Exams</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}Study Materials{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Study Materials / Notes</h1>
+        <a href="{% url 'student_dashboard' %}" class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition">
+            ← Back to Dashboard
+        </a>
+    </div>
+
+    {% if materials_by_subject %}
+        {% for subject_name, materials in materials_by_subject.items %}
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b-2 border-blue-500 pb-2">
+                📚 {{ subject_name }}
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {% for material in materials %}
+                <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition">
+                    <div class="flex items-start mb-3">
+                        <div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                            <span class="text-2xl">📄</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-gray-800 text-lg mb-1">{{ material.title }}</h3>
+                            {% if material.description %}
+                            <p class="text-gray-600 text-sm mb-2">{{ material.description|truncatewords:15 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        {% if material.section %}
+                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                            Section {{ material.section }}
+                        </span>
+                        {% endif %}
+                        <span class="text-gray-500 text-xs">
+                            📅 {{ material.uploaded_at|date:"M d, Y" }}
+                        </span>
+                    </div>
+                    
+                    <div class="text-xs text-gray-500 mb-3">
+                        Uploaded by: {{ material.uploaded_by.user.get_full_name }}
+                    </div>
+                    
+                    <a href="{{ material.file.url }}" target="_blank" download class="block w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg text-center transition">
+                        📥 Download
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <div class="bg-white rounded-xl shadow-lg p-12 text-center">
+        <div class="text-gray-400 text-6xl mb-4">📚</div>
+        <p class="text-gray-600 text-lg mb-2">No study materials available yet</p>
+        <p class="text-gray-500">Check back later for notes and study materials from your teachers</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

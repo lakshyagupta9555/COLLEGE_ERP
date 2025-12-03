@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Upload Study Material{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-xl shadow-lg p-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Upload Study Material</h1>
+        
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Title *</label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.title.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Description</label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.description.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Subject *</label>
+                {{ form.subject }}
+                {% if form.subject.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.subject.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Section (optional)</label>
+                {{ form.section }}
+                <p class="text-sm text-gray-500 mt-1">Leave blank to make available for all sections</p>
+                {% if form.section.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.section.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">File * (PDF, DOC, PPT, etc.)</label>
+                {{ form.file }}
+                {% if form.file.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.file.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <div class="flex gap-3">
+                <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition">
+                    Upload Material
+                </button>
+                <a href="{% url 'teacher_study_materials' %}" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 rounded-lg text-center transition">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

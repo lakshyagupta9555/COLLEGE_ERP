@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Schedule Exam{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">Schedule Exam</h1>
+
+    <div class="bg-white p-6 rounded shadow mb-6">
+        <form method="post">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 gap-4">
+                <label>Title</label>
+                {{ form.title }}
+                <label>Description</label>
+                {{ form.description }}
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label>Start Time</label>
+                        {{ form.start_time }}
+                    </div>
+                    <div>
+                        <label>End Time</label>
+                        {{ form.end_time }}
+                    </div>
+                </div>
+                <label class="flex items-center"><input type="checkbox" name="proctored" {% if form.proctored.value %}checked{% endif %}> Proctored</label>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Create Exam</button>
+            </div>
+        </form>
+    </div>
+
+    <div>
+        <h2 class="text-xl font-semibold mb-3">Your Exams</h2>
+        {% if exams %}
+        <div class="space-y-3">
+            {% for exam in exams %}
+            <div class="bg-white p-4 rounded shadow flex justify-between items-center">
+                <div>
+                    <h3 class="font-bold">{{ exam.title }}</h3>
+                    <p class="text-sm text-gray-600">{{ exam.start_time|date:'M d, Y H:i' }} - {{ exam.end_time|date:'M d, Y H:i' }}</p>
+                </div>
+                <div>
+                    <a href="{% url 'teacher_manage_questions' exam.id %}" class="text-sm text-indigo-600 mr-3">Manage Questions</a>
+                    <a href="{% url 'teacher_edit_exam' exam.id %}" class="text-sm text-blue-600 mr-3">Edit</a>
+                    <form action="{% url 'teacher_delete_exam' exam.id %}" method="post" style="display:inline">{% csrf_token %}<button type="submit" class="text-sm text-red-600 mr-3 bg-transparent border-none">Delete</button></form>
+                    <a href="{% url 'teacher_exam_results' exam.id %}" class="text-sm text-green-600">Results</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-600">You haven't scheduled any exams yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

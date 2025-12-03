@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}My Fees{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <a href="{% url 'student_dashboard' %}" class="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6">
+        <span class="mr-2">←</span> Back to Dashboard
+    </a>
+    {% if messages %}
+    <div class="mb-6">
+        {% for message in messages %}
+        <div class="p-4 rounded-lg {% if message.tags %}{{ message.tags }}{% endif %} text-white">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <h1 class="text-3xl font-bold text-gray-800 mb-8">Fees Dashboard</h1>
+    
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white">
+            <p class="text-blue-100 text-sm">Total Amount Due</p>
+            <h3 class="text-3xl font-bold">₹{{ total_amount_due }}</h3>
+        </div>
+        <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
+            <p class="text-green-100 text-sm">Amount Paid</p>
+            <h3 class="text-3xl font-bold">₹{{ total_paid }}</h3>
+        </div>
+        <div class="bg-gradient-to-br from-red-500 to-red-600 rounded-xl shadow-lg p-6 text-white">
+            <p class="text-red-100 text-sm">Amount Remaining</p>
+            <h3 class="text-3xl font-bold">₹{{ total_remaining }}</h3>
+        </div>
+        <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
+            <p class="text-purple-100 text-sm">No Dues Certificate</p>
+            <a href="{% url 'student_download_no_dues' %}" class="text-white hover:underline text-sm font-bold mt-2">📥 Download</a>
+        </div>
+    </div>
+    
+    <!-- Fees List -->
+    <div class="bg-white rounded-xl shadow-lg p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Your Fees</h2>
+        
+        {% if fees_list %}
+            <div class="space-y-4">
+                {% for item in fees_list %}
+                {% with fee=item.fee %}
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition">
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
+                        <div>
+                            <p class="text-gray-600 text-sm">Fee Type</p>
+                            <p class="font-bold text-lg">{{ fee.get_title_display }}</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 md:gap-4">
+                            <div>
+                                <p class="text-gray-600 text-sm">Base Amount</p>
+                                <p class="font-bold">₹{{ fee.amount }}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 text-sm">Fine</p>
+                                <p class="font-bold text-orange-600">₹{{ fee.fine }}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 text-sm">Rewards</p>
+                                <p class="font-bold text-green-600">-₹{{ fee.rewards }}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 text-sm">Total</p>
+                                <p class="font-bold text-lg">₹{{ fee.total_amount }}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-gray-600 text-sm">Paid / Due</p>
+                            <p class="font-bold">₹{{ fee.amount_paid }} / <span class="text-red-600">₹{{ fee.amount_remaining }}</span></p>
+                            <p class="text-sm text-gray-600 mt-1">{{ item.percent_paid }}% paid</p>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <a href="{% url 'student_fee_details' fee.id %}" class="bg-blue-500 hover:bg-blue-600 text-white text-center py-2 rounded transition text-sm">
+                                📋 Details
+                            </a>
+                            {% if fee.amount_remaining > 0 %}
+                            <a href="{% url 'student_pay_fees' fee.id %}" class="bg-green-500 hover:bg-green-600 text-white text-center py-2 rounded transition text-sm">
+                                💳 Pay
+                            </a>
+                            {% else %}
+                            <span class="bg-green-100 text-green-800 text-center py-2 rounded text-sm font-bold">✓ Paid</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endwith %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-8 text-gray-500">
+                No fees allocated yet
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

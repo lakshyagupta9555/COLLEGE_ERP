@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Fee Details{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-8">
+    <a href="{% url 'student_fees_dashboard' %}" class="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6">
+        <span class="mr-2">←</span> Back to Fees
+    </a>
+    <h1 class="text-2xl font-bold mb-4">{{ fees.get_title_display }} - Details</h1>
+
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+        <p><strong>Student:</strong> {{ fees.student.user.get_full_name }} ({{ fees.student.roll_number }})</p>
+        <p><strong>Amount:</strong> ₹{{ fees.amount }}</p>
+        <p><strong>Fine:</strong> ₹{{ fees.fine }}</p>
+        <p><strong>Rewards:</strong> ₹{{ fees.rewards }}</p>
+        <p><strong>Total:</strong> ₹{{ fees.total_amount }}</p>
+        <p><strong>Paid:</strong> ₹{{ fees.amount_paid }}</p>
+        <p><strong>Remaining:</strong> ₹{{ fees.amount_remaining }}</p>
+        <p><strong>Verified:</strong> {% if fees.is_verified %}Yes{% else %}No{% endif %}</p>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <h2 class="text-xl font-bold mb-4">Payments</h2>
+        {% if payments %}
+            <ul class="space-y-4">
+                {% for p in payments %}
+                <li class="border border-gray-200 rounded p-4">
+                    <div class="flex justify-between">
+                        <div>
+                            <p class="font-bold">₹{{ p.amount }}</p>
+                            <p class="text-sm text-gray-600">{{ p.payment_method }} - {{ p.transaction_id }}</p>
+                        </div>
+                        <div class="text-sm text-gray-500">{{ p.paid_on }}</div>
+                    </div>
+                    {% if p.remarks %}
+                    <p class="mt-2 text-sm text-gray-700">{{ p.remarks }}</p>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-gray-500">No payments recorded yet.</p>
+        {% endif %}
+    </div>
+
+    <a href="{% url 'student_fees_dashboard' %}" class="inline-block mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded">Back</a>
+</div>
+{% endblock %}

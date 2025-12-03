@@ -39,6 +39,22 @@
                     <input type="text" name="phone" value="{{ student.phone }}" required 
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
                 </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Degree</label>
+                    <select name="degree" class="w-full px-4 py-3 border border-gray-300 rounded-lg">
+                        <option value="">-- Select Degree --</option>
+                        {% for d in degrees %}
+                        <option value="{{ d.id }}" {% if student.degree and student.degree.id == d.id %}selected{% endif %}>{{ d.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Section</label>
+                    <input type="text" name="section" value="{{ student.section }}" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="e.g. A">
+                </div>
             </div>
             
             <div>
